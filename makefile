@@ -20,5 +20,4 @@ packet.o: packet.cpp
 	$(CC) $(CFLAGS) $(WARNING) -std=c++11 packet.cpp
 
 clean: 
-	rm -rf  *.o  project project.o node.o packet.o
-	make
+	rm -rf  *.o  $(FILENAME)
