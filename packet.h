@@ -1,3 +1,12 @@
+/*-----------------------------------------------------------------------------
+* FILE        	: packet.h
+* DESCRIPTION 	: The header file for the packet class. Defines the methods and
+*					: attributes for the packet class. We consider these packets
+*					: to be somewhat "intelligent" in the sense that they "know"
+*              : what path they have taken.
+* VERSION     	: 1.0
+* NOTES       	: 
+-----------------------------------------------------------------------------*/
 #ifndef PACKET
 #define PACKET
 
@@ -11,9 +20,6 @@ using namespace std;
 
 class packet
 {
-
-
-
 	public:
 
 		//Constructorss
@@ -35,7 +41,6 @@ class packet
 		int packet_location;
 		int total_weight_taken;
 		string path_taken;
-
 };
 
 #endif

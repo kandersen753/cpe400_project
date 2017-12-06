@@ -1,3 +1,13 @@
+/*-----------------------------------------------------------------------------
+* FILE         : node.h
+* DESCRIPTION  : The header file for the node class. Defines the methods and 
+*              : attributes for the node class. This node class is a 
+*              : specialized form of the typical "node" designed
+*              : for our simulation.
+* VERSION      : 1.0
+* NOTES        : Also defines a "path" struct which tracks the remaining paths
+*              : to the destination.
+-----------------------------------------------------------------------------*/
 #ifndef NODE
 #define NODE
 
@@ -11,16 +21,12 @@ using namespace std;
 
 class node
 {
-
-
-
 	public:
-
 		//Constructorss
 		node(std::string name, int percent_of_failing);
 
 		int get_percent_of_failing();
-		int get_list_cout();
+		int get_list_count();
 		std::string get_node_name();
 		node* get_node_in_list(int index_value);
 		int get_node_in_list_weight(int index_value);
@@ -37,7 +43,6 @@ class node
 
 		void compute_on_or_off();
 
-
 	private:
 		//member values
 
@@ -47,12 +52,9 @@ class node
 		node* neighbors[9];
 		int neighbors_weights[9];
 
-
 		//keep track of node activated/deactivated
 		int percent_of_failing = 0;
 		bool node_is_on;
-
-
 
 		//store all the path values from the current node to the destination
 		struct path {
@@ -62,10 +64,6 @@ class node
 		};
 		path temp_path;
 		std::vector<path> path_optimal_paths;
-
-
-
-
 };
 
 #endif
