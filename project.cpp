@@ -9,7 +9,7 @@
 #include <iostream>
 #include <stdlib.h>     /* exit, rand */
 #include <fstream> 		//file input
-#include <string>
+#include <cstring>
 #include <cstdlib>
 #include <ctime>
 
@@ -20,18 +20,28 @@
 
 using namespace std;
 
-const int number_of_routers = 10;
-node* routers[number_of_routers];
+const int MAX_ROUTERS = 10;
+const int HELP_ARG = 1;
+const int START_NODE_ARG = 1;
+const int END_NODE_ARG = 2;
+const int INTERACTIVE_ARG = 4;
+const int MIN_NODE = 0;
+const int MAX_NODE = 8;
+
+
+node* routers[MAX_ROUTERS];
 
 string start_node;
 string end_node;
 
 struct path {
-  std::string current_path;
+  string current_path;
   int current_weight;
 };
 
 
+void display_config_error();
+void display_config_options();
 void initial_setup(int argc, char *argv[]);
 void compute_paths();
 void send_packets(bool keyboard_input);
@@ -47,22 +57,55 @@ void send_packets(bool keyboard_input);
 int main(int argc, char *argv[])
 {
 
-	bool keyboard_input;	
+	bool keyboard_input;
 
-	if(argc != 5)
+   /*--------------------------------------------------------------------------
+   * Check command line arguments to ensure that the provided options are valid
+   --------------------------------------------------------------------------*/
+	if (argc == 2 && strcmp(argv[HELP_ARG], "-h") == 0)
+   {
+      display_config_options();
+      exit(0);
+   }
+
+   if(argc != 5)
 	{
-		cout << "\n\nERROR!\n\nPlease ensure you are entering the start node, end node, paths file, and !\n\n";
-		exit(0);
+      display_config_error();
+      exit(0);
 	}
 
-	if(stoi(argv[4]) == 0)
+   if(stoi(argv[START_NODE_ARG]) < MIN_NODE || stoi(argv[START_NODE_ARG]) > MAX_NODE)
+   {
+      display_config_error();
+      exit(0);
+   } 
+
+   if(stoi(argv[END_NODE_ARG]) < MIN_NODE || stoi(argv[END_NODE_ARG]) > MAX_NODE)
+   {
+      display_config_error();
+      exit(0);
+   }
+
+   if(stoi(argv[START_NODE_ARG]) == stoi(argv[END_NODE_ARG]))
+   {
+      display_config_error();
+      cout << "NOTE: the start node and destination node cannot be the same." << endl;
+      exit(0);
+   }
+
+	if(stoi(argv[INTERACTIVE_ARG]) == 0)
 	{
 		keyboard_input = false;
 	}
-	else
+	else if (stoi(argv[INTERACTIVE_ARG]) == 1)
 	{
 		keyboard_input = true;
 	}
+   else
+   {
+      display_config_error();
+      exit(0);
+   }
 
 	initial_setup(argc, argv);
 
@@ -71,6 +114,46 @@ int main(int argc, char *argv[])
 	send_packets(keyboard_input);
 
 	return 0;
+}
+
+
+/*-----------------------------------------------------------------------------
+* FUNCTION     : display_config_error()
+* DESCRIPTION  : Simply prints a message through standard out informing the 
+*              : user that the provided configuration is invalid.
+* VERSION      : 1.0
+* NOTES        : 
+-----------------------------------------------------------------------------*/
+void display_config_error()
+{
+   // abort simulation, improper running parameters detected
+
+   cout << "ERROR: provided configuration is not valid.";
+   cout << " See the README or try \"./project -h\" for instructions." << endl;
+}
+
+/*-----------------------------------------------------------------------------
+* FUNCTION     : display_config_options()
+* DESCRIPTION  : Simply prints a message through standard out informing the 
+*              : user of the command line arguments available to the program.
+* VERSION      : 1.0
+* NOTES        : 
+-----------------------------------------------------------------------------*/
+void display_config_options()
+{
+   cout << "This program requires 4 arguments in order to operate correctly.\n";
+   cout << "Example usage: \n";
+   cout << "------------------------------------------------------------------------------\n";
+   cout << "./project 0 8 paths.txt 0\n";
+   cout << "          | |      |    |\n";
+   cout << "          | |      |    |-> Increment via keyboard: 0 = no, 1 = yes\n";
+   cout << "          | |      |\n";
+   cout << "          | |      |------> Path and filename of configuration file\n";
+   cout << "          | |\n";
+   cout << "          | |-------------> Destination node: 0 <-> 8\n";
+   cout << "          |\n";
+   cout << "          |---------------> Starting node: 0 <-> 8 (cannot equal dest. node)\n";
+   cout << endl;  
 }
 
 /*-----------------------------------------------------------------------------
@@ -112,7 +195,7 @@ void initial_setup(int argc, char *argv[])
 
 
 	//create all nodes with random failure values
-	for(int router_number = 0; router_number < number_of_routers; router_number++)
+	for(int router_number = 0; router_number < MAX_ROUTERS; router_number++)
 	{
 		//ensure the start node has no failure value
 		if(router_number == atoi(argv[1]))
@@ -181,7 +264,7 @@ void initial_setup(int argc, char *argv[])
 -----------------------------------------------------------------------------*/
 void compute_paths()
 {
-	for(int current_node = 0; current_node < number_of_routers; current_node++)
+	for(int current_node = 0; current_node < MAX_ROUTERS; current_node++)
 	{
 		std::vector<path> paths_taken;
 
@@ -278,7 +361,7 @@ void send_packets(bool keyboard_input)
 
 
 		//iterate on making a node on/off
-		for(int router_index = 0; router_index < number_of_routers; router_index++)
+		for(int router_index = 0; router_index < MAX_ROUTERS; router_index++)
 		{
 			routers[router_index]->compute_on_or_off();
 		}

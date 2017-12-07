@@ -17,6 +17,7 @@
 
 using namespace std;
 
+const int MAX_NEIGHBORS = 9;
 
 
 class node
@@ -49,8 +50,8 @@ class node
 		//keep track of the neighbors and their values
 		std::string node_name = "";
 		int list_count = 0;
-		node* neighbors[9];
-		int neighbors_weights[9];
+		node* neighbors[MAX_NEIGHBORS];
+		int neighbors_weights[MAX_NEIGHBORS];
 
 		//keep track of node activated/deactivated
 		int percent_of_failing = 0;
@@ -63,7 +64,7 @@ class node
 			bool operator<(const path &other_path) const{ return this->current_weight < other_path.current_weight; }
 		};
 		path temp_path;
-		std::vector<path> path_optimal_paths;
+		vector<path> path_optimal_paths;
 };
 
 #endif
