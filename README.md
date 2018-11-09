@@ -1,2 +1,83 @@
 # cpe400_project
 cpe 400 project fall 2017
+
+======================================================
+Installation instructions
+======================================================
+
+You do NOT need to install any extra files or libraries
+other than standard g++ dependencies. Please ensure that
+g++ is installed and updated before continuing. 
+
+Before running the simulation, you must compile the source
+code. After unzipping the folder, you may compile by typing:
+
+``````````````````````````````````````````````````````````
+   make
+``````````````````````````````````````````````````````````
+into the terminal. 
+
+You may now run the program by following the instructions
+in the "Program running instructions" section of this 
+README.
+
+Note: you may remove object files and the executable by typing:
+`````````````````````````````````````````````````````````
+make clean
+`````````````````````````````````````````````````````````
+
+
+======================================================
+Program Background
+======================================================
+
+This program desmonstrates Project Number 4, which is 
+Dynamic routing mechanism design in faulty network.
+
+(1)When running this program a file will be read in to create
+the world the packets will be sent through.
+
+(2)From there, each node will perform a DSR optimal path search
+and will store the optimal path as well as suboptimal paths returned
+to it for future use.
+
+(3)Each node created will have a random value ranging 
+from 0-80 percent of the node failing for DEMONSTRATION 
+purposes on how the system will react to nodes going on/off.
+
+(4)Based on if an neighboring node is on or off, the current node
+with the packet will anaylze and send the information accordingly
+to follow an greedy optimal path.
+
+
+
+======================================================
+Program running instructions
+======================================================
+
+./project 0 7 paths.txt 1
+
+where:
+
+	0 - The starting node the packets will be sent from
+	7 - The end node that the packets will be untimately sent to
+	paths.txt - The structure of the world that the packets will be sent through
+	1 - The boolean flag (0 or 1) for incremental packet sending by keyboard command
+
+
+-----------------
+paths.txt OUTLINE
+-----------------
+Each line in the file will have data that will be used to create the world
+that the packets will be sent through. EACH line will have three integer values. 
+An axmple line can look like this:
+
+	0 1 2
+
+	0 - The node start that will have this connection 
+	1 - The node end node that will complete this connection
+	2 - The weight of this connection between the two nodes
+
+!IMPORTANT! There are only 9 nodes allowed in this program for
+demonstration purposes. These node names range from 0-8 for both
+start and end node. The start and end node may not be the same.
